@@ -1,4 +1,5 @@
 import rate_limiter
 
-#exposed method 
-rate_limited.callMethod(bucket)
+bucket = rate_limiter.Bucket(100)
+# exposed method
+rate_limiter.callMethod()
