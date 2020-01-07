@@ -22,18 +22,16 @@ class Bucket():
         if (self._total < self.capacity):
             self._total += 1
         # 1 request per 36secs = 100 requests per 1 hour (3600secs)
-        threading.Timer(36.0, bucket.put_token).start()
+        threading.Timer(4.0, bucket.put_token).start()
 
     def get_token(self):
         return self._total
 
-def callMethod():
+def call_method():
     res = bucket.use_token()
     if res == True:
-        print('Total call times left: ', bucket.get_token())
         return {'Status': 200}
     else:
-        print('Rate limit exceeded. Try again in 36 seconds')
         return {'Status': 429, 'Message': 'Rate limit exceeded. Try again in 36 seconds'}
 
 bucket = Bucket(100)
