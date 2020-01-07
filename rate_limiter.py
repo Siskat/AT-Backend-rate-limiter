@@ -22,7 +22,7 @@ class Bucket():
         if (self._total < self.capacity):
             self._total += 1
         # 1 request per 36secs = 100 requests per 1 hour (3600secs)
-        threading.Timer(4.0, bucket.put_token).start()
+        threading.Timer(36.0, bucket.put_token).start()
 
     def get_token(self):
         return self._total
