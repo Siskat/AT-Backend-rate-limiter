@@ -7,7 +7,7 @@ import socketserver
 
 class Bucket():
 
-    def __init__(self,capacity):
+    def __init__(self, capacity):
         self.timestamp = time()
         self._total = capacity
         self.capacity = capacity
@@ -17,12 +17,12 @@ class Bucket():
             self._total -= 1
             return True
         return False
-        
+
     def put_token(self):
         if (self._total < self.capacity):
             self._total += 1
-            threading.Timer(36.0,self.put_token()).start()
-
+        # 1 request per 36secs = 100 requests per 1 hour (3600secs)
+        threading.Timer(36.0, bucket.put_token).start()
 
     def get_token(self):
         return self._total
@@ -31,16 +31,10 @@ def callMethod():
     res = bucket.use_token()
     if res == True:
         print('Total call times left: ', bucket.get_token())
-        return True
+        return {'Status': 200}
     else:
         print('Rate limit exceeded. Try again in 36 seconds')
-        return False
-    
+        return {'Status': 429, 'Message': 'Rate limit exceeded. Try again in 36 seconds'}
+
 bucket = Bucket(100)
 bucket.put_token()
-
-while(1):
-    userInput = input("What do you want to do?")
-    if userInput == "call":
-        callMethod()
-
